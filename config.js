@@ -1,0 +1,1 @@
+window.OFFER_CONFIG = {salesOpen:true, checkout:{basic:'https://pay.wiapy.com/6af9a5d95052a21e212fbadf',complete:'https://pay.wiapy.com/6af9a700f22d19f6756ba35d',upgrade:'https://pay.wiapy.com/i3wKV7Z-Z7X'}};
