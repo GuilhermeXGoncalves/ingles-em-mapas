@@ -23,3 +23,30 @@ dialog{max-width:510px;width:calc(100% - 32px);border:0;border-radius:18px;paddi
 .showcase-slide img.showcase-image-missing{min-height:250px;object-fit:contain}
 @media(max-width:640px){.showcase-section{padding:54px 0}.showcase-viewport{border-radius:14px}.showcase-controls{gap:12px}.showcase-slide img{max-height:440px}.showcase-cta{width:100%;justify-content:center}}
 @media(prefers-reduced-motion:reduce){.showcase-track{transition:none}}
+
+/* Seção dos três bônus do Plano Completo */
+.bonus-section{background:linear-gradient(145deg,#061838,#082859 58%,#03132f);color:#fff;padding:88px 0;overflow:hidden}
+.bonus-heading{text-align:center;max-width:750px;margin:0 auto 32px}
+.bonus-heading .eyebrow{color:#ffd73e}
+.bonus-heading h2{color:#fff;margin:8px 0 18px}
+.bonus-heading h2 em{color:#ffdc38;font-style:normal}
+.bonus-heading p{color:#e1e8f9}
+.bonus-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:stretch}
+.bonus-card{background:#fff;color:#13244e;border-radius:20px;overflow:hidden;box-shadow:0 14px 35px rgba(0,0,0,.22)}
+.bonus-cover{position:relative;aspect-ratio:3/4;background:radial-gradient(circle at 70% 20%,#175fbd 0%,#07265a 54%,#021333 100%);overflow:hidden}
+.bonus-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bonus-cover-fallback{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:26px;gap:20px;color:white}
+.bonus-cover-fallback .bonus-gift{font-size:12px;font-weight:800;border-radius:30px;background:#ffda22;color:#061838;padding:10px 15px}
+.bonus-cover-fallback strong{font-size:clamp(25px,3vw,44px);line-height:1.08;text-shadow:0 3px 15px #0007}
+.bonus-cover-fallback strong span{display:block;color:#ffdc2d;font-size:clamp(76px,9vw,122px);line-height:1}
+.bonus-cover-fallback small{color:#f8e7a1}
+.bonus-cover-mistakes .bonus-cover-fallback strong span{color:#ffe13b}
+.bonus-cover-challenges .bonus-cover-fallback strong span{color:#ffe13b}
+.bonus-card-content{padding:22px 22px 27px}
+.bonus-number{font-size:12px;font-weight:900;letter-spacing:.12em;color:#5a40ed}
+.bonus-card-content h3{font-size:23px;line-height:1.15;margin:9px 0}
+.bonus-card-content p{font-size:15px;line-height:1.55;color:#44516e;margin:0}
+.bonus-included{text-align:center;color:#fff;margin:26px auto 18px}
+.bonus-cta{width:fit-content;display:flex!important;margin:0 auto;justify-content:center}
+@media(max-width:800px){.bonus-grid{gap:14px}.bonus-card-content{padding:16px}.bonus-card-content h3{font-size:19px}}
+@media(max-width:640px){.bonus-section{padding:56px 0}.bonus-grid{grid-template-columns:1fr;max-width:390px;margin:0 auto;gap:22px}.bonus-cover{aspect-ratio:4/4.4}.bonus-cover-fallback strong{font-size:36px}.bonus-cover-fallback strong span{font-size:100px}.bonus-card-content{padding:20px}.bonus-cta{width:100%}}
