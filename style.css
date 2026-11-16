@@ -157,3 +157,8 @@ html{scroll-padding-top:24px}
 @media(prefers-reduced-motion:reduce){
  html{scroll-behavior:auto}
 }
+
+/* Tarja de valor no plano Completo */
+.complete-includes-basic{display:flex;align-items:center;justify-content:center;gap:9px;margin:18px 0 14px;padding:12px 14px;border-radius:11px;background:#d7ff3f;color:#191731;border:2px solid #191731;font-size:13px;font-weight:900;letter-spacing:.025em;text-align:center;box-shadow:3px 4px 0 #191731}
+.complete-includes-basic span{display:inline-grid;place-items:center;width:20px;height:20px;flex:0 0 20px;border-radius:50%;background:#191731;color:#d7ff3f;font-size:12px}
+@media(max-width:400px){.complete-includes-basic{font-size:12px;padding:11px 8px;letter-spacing:0}}
