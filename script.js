@@ -8,18 +8,64 @@ dialog.querySelector('.modal-close').addEventListener('click',closeUpgrade);dial
 
 (()=>{const video=document.getElementById('offer-video'),button=document.getElementById('enable-video-sound'),caption=document.getElementById('video-caption');if(!video||!button)return;video.muted=true;video.defaultMuted=true;const attempt=video.play();if(attempt)attempt.catch(()=>{caption.textContent='Toque na tarja para assistir com som.'});button.addEventListener('click',()=>{video.pause();video.currentTime=0;video.muted=false;video.defaultMuted=false;video.volume=1;video.loop=false;video.controls=true;const playing=video.play();if(playing)playing.then(()=>{button.hidden=true;caption.textContent='Use os controles do vídeo para pausar ou ajustar o som.';video.focus()}).catch(()=>{video.muted=true;video.defaultMuted=true;video.loop=true;video.controls=true;caption.textContent='Toque novamente na tarja para assistir com som.'})})})();
 
-/* Carrossel de amostras de mapas — avança somente quando visível. */
-(()=>{const root=document.querySelector('.showcase-carousel');if(!root)return;
-const track=root.querySelector('.showcase-track'),viewport=root.querySelector('.showcase-viewport'),slides=[...track.children],dots=root.querySelector('#showcase-dots');
-let index=0,timer=null,visible=true;const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-function syncHeight(){const active=slides[index];if(active)viewport.style.height=Math.ceil(active.getBoundingClientRect().height)+'px'}
-function go(i){index=(i+slides.length)%slides.length;track.style.transform='translateX(-'+(index*100)+'%)';[...dots.children].forEach((d,n)=>{d.setAttribute('aria-current',String(n===index));d.setAttribute('aria-label','Ver mapa '+(n+1))});syncHeight()}
-window.addEventListener('resize',syncHeight);if('ResizeObserver'in window){const sizes=new ResizeObserver(syncHeight);slides.forEach(slide=>sizes.observe(slide))}
-slides.forEach((s,i)=>{const img=s.querySelector('img');img.addEventListener('load',syncHeight);const d=document.createElement('button');d.type='button';d.className='showcase-dot';d.addEventListener('click',()=>{go(i);restart()});dots.appendChild(d);const img=s.querySelector('img');img.addEventListener('error',()=>{img.hidden=true;s.classList.add('showcase-slide-unavailable');const p=document.createElement('p');p.textContent='Prévia do mapa em preparação';p.style.padding='110px 12px';s.insertBefore(p,s.querySelector('figcaption'))})});go(0);
-function stop(){if(timer!==null){clearInterval(timer);timer=null}}function start(){stop();if(!reduced&&visible&&!document.hidden)timer=setInterval(()=>go(index+1),4500)}function restart(){start()}
-root.querySelector('#showcase-prev').addEventListener('click',()=>{go(index-1);restart()});root.querySelector('#showcase-next').addEventListener('click',()=>{go(index+1);restart()});
-root.addEventListener('mouseenter',stop);root.addEventListener('mouseleave',start);root.addEventListener('focusin',stop);root.addEventListener('focusout',e=>{if(!root.contains(e.relatedTarget))start()});
-let touchX=null;viewport.addEventListener('touchstart',e=>{touchX=e.touches[0]?.clientX??null},{passive:true});viewport.addEventListener('touchend',e=>{if(touchX===null)return;const delta=(e.changedTouches[0]?.clientX??touchX)-touchX;if(Math.abs(delta)>50){go(index+(delta<0?1:-1));restart()}touchX=null},{passive:true});
-document.addEventListener('visibilitychange',()=>{document.hidden?stop():start()});
-if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;visible?start():stop()},{threshold:.15});observer.observe(root)}else start();
+/* Carrossel: só o mapa ativo participa do layout, evitando altura herdada de imagens verticais. */
+(()=>{
+ const root=document.querySelector('.showcase-carousel');
+ if(!root)return;
+ const viewport=root.querySelector('.showcase-viewport');
+ const slides=[...root.querySelectorAll('.showcase-slide')];
+ const dots=root.querySelector('#showcase-dots');
+ const prev=root.querySelector('#showcase-prev');
+ const next=root.querySelector('#showcase-next');
+ if(!slides.length)return;
+ let index=0,timer=null,visible=true;
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const dotButtons=slides.map((slide,i)=>{
+   const dot=document.createElement('button');
+   dot.type='button';dot.className='showcase-dot';
+   dot.setAttribute('aria-label','Ver mapa '+(i+1));
+   dot.addEventListener('click',()=>{show(i);start()});
+   dots.appendChild(dot);
+   const img=slide.querySelector('img');
+   img?.addEventListener('error',()=>{
+     img.hidden=true;
+     if(!slide.querySelector('.showcase-unavailable')){
+       const message=document.createElement('p');
+       message.className='showcase-unavailable';
+       message.textContent='Prévia do mapa indisponível';
+       slide.insertBefore(message,slide.querySelector('figcaption'));
+     }
+   });
+   return dot;
+ });
+ function show(n){
+   index=(n+slides.length)%slides.length;
+   slides.forEach((slide,i)=>{
+     slide.hidden=i!==index;
+     slide.setAttribute('aria-hidden',String(i!==index));
+     dotButtons[i].setAttribute('aria-current',String(i===index));
+   });
+ }
+ function stop(){if(timer!==null){clearInterval(timer);timer=null}}
+ function start(){stop();if(!reduced&&visible&&!document.hidden)timer=setInterval(()=>show(index+1),4500)}
+ prev.addEventListener('click',()=>{show(index-1);start()});
+ next.addEventListener('click',()=>{show(index+1);start()});
+ root.addEventListener('mouseenter',stop);
+ root.addEventListener('mouseleave',start);
+ root.addEventListener('focusin',stop);
+ root.addEventListener('focusout',e=>{if(!root.contains(e.relatedTarget))start()});
+ let touchStart=null;
+ viewport.addEventListener('touchstart',e=>{touchStart=e.touches[0]?.clientX??null},{passive:true});
+ viewport.addEventListener('touchend',e=>{
+   if(touchStart===null)return;
+   const delta=(e.changedTouches[0]?.clientX??touchStart)-touchStart;
+   if(Math.abs(delta)>45){show(index+(delta<0?1:-1));start()}
+   touchStart=null;
+ },{passive:true});
+ document.addEventListener('visibilitychange',()=>document.hidden?stop():start());
+ show(0);
+ if('IntersectionObserver'in window){
+   const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;visible?start():stop()},{threshold:.15});
+   observer.observe(root);
+ }else start();
 })();
