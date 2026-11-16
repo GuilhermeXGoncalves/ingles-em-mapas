@@ -8,7 +8,7 @@ dialog{max-width:510px;width:calc(100% - 32px);border:0;border-radius:18px;paddi
 .showcase-section{padding:80px 0;background:linear-gradient(180deg,#f7f6ff 0%,#fff 100%);overflow:hidden}
 .showcase-carousel{max-width:920px;margin:30px auto 0}
 .showcase-viewport{overflow:hidden;border-radius:24px;box-shadow:0 18px 60px rgba(31,29,86,.12);background:#fff}
-.showcase-track{display:flex;transition:transform .55s cubic-bezier(.2,.8,.2,1);will-change:transform}
+.showcase-track{display:flex;align-items:flex-start;transition:transform .55s cubic-bezier(.2,.8,.2,1);will-change:transform}
 .showcase-slide{margin:0;flex:0 0 100%;min-width:0;text-align:center;background:#fff}
 .showcase-slide img{display:block;width:100%;height:auto;max-height:620px;object-fit:contain;background:#fff}
 .showcase-slide figcaption{padding:14px 16px;font-size:14px;font-weight:700;color:#261d78}
@@ -50,3 +50,8 @@ dialog{max-width:510px;width:calc(100% - 32px);border:0;border-radius:18px;paddi
 .bonus-cta{width:fit-content;display:flex!important;margin:0 auto;justify-content:center}
 @media(max-width:800px){.bonus-grid{gap:14px}.bonus-card-content{padding:16px}.bonus-card-content h3{font-size:19px}}
 @media(max-width:640px){.bonus-section{padding:56px 0}.bonus-grid{grid-template-columns:1fr;max-width:390px;margin:0 auto;gap:22px}.bonus-cover{aspect-ratio:4/4.4}.bonus-cover-fallback strong{font-size:36px}.bonus-cover-fallback strong span{font-size:100px}.bonus-card-content{padding:20px}.bonus-cta{width:100%}}
+
+/* Altura do carrossel acompanha cada mapa, sem sobra abaixo dos slides horizontais */
+.showcase-viewport{transition:height .35s ease}
+.showcase-slide{align-self:flex-start}
+@media(prefers-reduced-motion:reduce){.showcase-viewport{transition:none}}
