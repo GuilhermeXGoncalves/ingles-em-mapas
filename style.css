@@ -162,3 +162,33 @@ html{scroll-padding-top:24px}
 .complete-includes-basic{display:flex;align-items:center;justify-content:center;gap:9px;margin:18px 0 14px;padding:12px 14px;border-radius:11px;background:#d7ff3f;color:#191731;border:2px solid #191731;font-size:13px;font-weight:900;letter-spacing:.025em;text-align:center;box-shadow:3px 4px 0 #191731}
 .complete-includes-basic span{display:inline-grid;place-items:center;width:20px;height:20px;flex:0 0 20px;border-radius:50%;background:#191731;color:#d7ff3f;font-size:12px}
 @media(max-width:400px){.complete-includes-basic{font-size:12px;padding:11px 8px;letter-spacing:0}}
+
+/* Garantia verificada de 7 dias e reforço visual da oferta */
+.guarantee-seven{align-items:center}
+.guarantee-seven h2 em{color:#5546ff;font-style:normal}
+.seal-seven{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;line-height:1.12}
+.seal-seven span{font-size:clamp(10px,1.1vw,13px);letter-spacing:.07em;font-weight:800}
+.seal-seven strong{font-size:clamp(27px,3vw,40px);letter-spacing:-.05em;line-height:1.2}
+.upgrade-price.enhanced-upgrade-price{display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;padding:20px 16px}
+.upgrade-regular{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;font-size:13px}
+.upgrade-regular del{color:#7e738e;font-weight:700}
+.enhanced-upgrade-price .upgrade-final{font-size:clamp(42px,7vw,60px);line-height:1.05;color:#5546ff;letter-spacing:-.06em}
+.upgrade-savings{display:inline-block!important;border-radius:8px;background:#d7ff3f;color:#191731!important;font-size:13px;font-weight:900;padding:9px 12px}
+.upgrade-benefit-label{font-weight:800;margin:18px 0 8px}
+.upgrade-guarantee{font-size:13px;font-weight:800;color:#302674;margin:12px 0}
+@media(max-width:760px){
+ .mobile-sticky-offer.is-pricing-visible{display:none!important}
+ .guarantee-seven{text-align:center}
+ .guarantee-seven .seal-seven{margin-left:auto;margin-right:auto}
+ .mobile-sticky-copy strong{font-size:14px}
+ .mobile-sticky-copy small{font-size:9px}
+ .mobile-sticky-button{font-size:11px;letter-spacing:-.01em}
+}
+@media(max-width:355px){
+ .mobile-sticky-copy{max-width:43%}
+ .mobile-sticky-button{font-size:10px}
+}
+/* Limite de trabalho de renderização fora da tela, mantendo as seções legíveis */
+@supports(content-visibility:auto){
+ .feedback-section,.bonus-section,.bundle-section{content-visibility:auto;contain-intrinsic-size:auto 700px}
+}
