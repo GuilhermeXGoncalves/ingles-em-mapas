@@ -55,3 +55,12 @@ dialog{max-width:510px;width:calc(100% - 32px);border:0;border-radius:18px;paddi
 .showcase-viewport{transition:height .35s ease}
 .showcase-slide{align-self:flex-start}
 @media(prefers-reduced-motion:reduce){.showcase-viewport{transition:none}}
+
+/* Correção definitiva: apenas o slide visível define a altura do carrossel */
+.showcase-viewport{height:auto!important;min-height:0!important;transition:none!important}
+.showcase-track{display:block!important;height:auto!important;transform:none!important;transition:none!important}
+.showcase-slide{display:block;position:relative;width:100%;height:auto!important;min-height:0!important}
+.showcase-slide[hidden]{display:none!important}
+.showcase-slide img{height:auto!important;max-height:none!important;object-fit:contain}
+.showcase-slide figcaption{margin:0;padding:12px 14px}
+.showcase-unavailable{padding:60px 15px;text-align:center}
