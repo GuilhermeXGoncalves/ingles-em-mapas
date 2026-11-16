@@ -84,3 +84,25 @@ dialog.querySelector('.modal-close').addEventListener('click',closeUpgrade);dial
    observer.observe(root);
  }else start();
 })();
+
+/* Oculta o CTA fixo quando os cards da oferta já estão visíveis. */
+(()=>{
+ const banner=document.getElementById('mobile-sticky-offer');
+ const pricing=document.getElementById('planos');
+ if(!banner||!pricing)return;
+ const viewportCheck=()=>{
+  const bounds=pricing.getBoundingClientRect();
+  const visible=bounds.top<window.innerHeight-90&&bounds.bottom>90;
+  banner.classList.toggle('is-pricing-visible',visible);
+ };
+ if('IntersectionObserver'in window){
+  const observer=new IntersectionObserver(entries=>{
+   banner.classList.toggle('is-pricing-visible',entries[0].isIntersecting);
+  },{rootMargin:'-90px 0px -90px 0px',threshold:0});
+  observer.observe(pricing);
+ }else{
+  window.addEventListener('scroll',viewportCheck,{passive:true});
+  window.addEventListener('resize',viewportCheck,{passive:true});
+  viewportCheck();
+ }
+})();
