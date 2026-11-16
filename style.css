@@ -64,3 +64,20 @@ dialog{max-width:510px;width:calc(100% - 32px);border:0;border-radius:18px;paddi
 .showcase-slide img{height:auto!important;max-height:none!important;object-fit:contain}
 .showcase-slide figcaption{margin:0;padding:12px 14px}
 .showcase-unavailable{padding:60px 15px;text-align:center}
+
+/* Prova social: quatro prints reais do Instagram Direct */
+.feedback-section{background:#f5f2ff}
+.feedback-section .section-intro h2 em{color:#5546ff;font-style:normal}
+.instagram-proof-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;align-items:start}
+.instagram-proof-card{min-width:0;margin:0;background:#fff;border:1px solid #e7e0ff;border-radius:18px;padding:10px;box-shadow:0 12px 28px rgba(44,32,100,.09)}
+.instagram-proof-frame{position:relative;overflow:hidden;border-radius:12px;background:#f1edff;min-height:300px}
+.instagram-proof-frame img{display:block;width:100%;height:auto;max-height:560px;object-fit:contain}
+.instagram-proof-frame img[hidden]{display:none}
+.instagram-proof-placeholder{display:flex;min-height:300px;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;color:#5546ff;padding:20px}
+.instagram-proof-placeholder[hidden]{display:none}
+.instagram-proof-placeholder span{font-size:32px}.instagram-proof-placeholder strong{font-size:20px}.instagram-proof-placeholder small{font-size:12px;color:#716b8a}
+.instagram-proof-card figcaption{text-align:center;font-size:12px;font-weight:700;color:#55446d;padding:12px 3px 4px}
+.instagram-proof-note{max-width:690px;margin:22px auto 18px;text-align:center;color:#716b8a;font-size:12px;line-height:1.5}
+.instagram-proof-action{text-align:center}.instagram-proof-action .btn{margin:0 auto}
+@media(max-width:900px){.instagram-proof-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.instagram-proof-grid{display:flex;overflow-x:auto;overscroll-behavior-inline:contain;scroll-snap-type:x mandatory;gap:14px;padding:5px 6px 22px;margin:0 -6px;scrollbar-width:thin}.instagram-proof-card{flex:0 0 83%;scroll-snap-align:center}.instagram-proof-action .btn{width:100%;justify-content:center}.feedback-section .section-intro{text-align:center}}
