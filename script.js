@@ -21,41 +21,33 @@ function closeUpgrade(){dialog.close();previousFocus?.focus()}
 document.querySelectorAll('[data-checkout]').forEach(button=>{button.disabled=!config.salesOpen;button.addEventListener('click',()=>{trackOfferEvent('plan_selected',{plan:button.dataset.checkout,price:button.dataset.checkout==='basic'?10:27,currency:'BRL'});if(button.dataset.checkout==='basic'){previousFocus=button;dialog.showModal();trackOfferEvent('upgrade_offer_view',{price:17,currency:'BRL'});dialog.querySelector('.modal-close').focus()}else checkout('complete')})});
 dialog.querySelector('.modal-close').addEventListener('click',closeUpgrade);dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeUpgrade()}});dialog.addEventListener('close',()=>previousFocus?.focus());document.getElementById('accept-upgrade').addEventListener('click',()=>{trackOfferEvent('upgrade_accepted',{price:17,currency:'BRL'});checkout('upgrade')});document.getElementById('continue-basic').addEventListener('click',()=>{trackOfferEvent('upgrade_declined',{price:10,currency:'BRL'});checkout('basic')});
 
-/* O vídeo de 25MB só é solicitado após interação explícita. */
+/* Reprodução automática silenciosa: o usuário ativa o som manualmente. */
 (()=>{
  const video=document.getElementById('offer-video');
  const button=document.getElementById('enable-video-sound');
  const caption=document.getElementById('video-caption');
- const stage=document.getElementById('offer-video-stage');
- const preview=document.getElementById('offer-video-preview');
- if(!video||!button||!stage)return;
- let initialized=false;
+ if(!video||!button)return;
+ video.muted=true;video.defaultMuted=true;
+ const playback=video.play();
+ if(playback&&typeof playback.catch==='function'){
+   playback.catch(()=>{if(caption)caption.textContent='Toque no vídeo para iniciar a reprodução.';video.controls=true});
+ }
  button.addEventListener('click',()=>{
-  if(!initialized){
-   const source=video.querySelector('source[data-src]');
-   if(!source)return;
-   source.src=source.dataset.src;
-   source.removeAttribute('data-src');
-   video.hidden=false;
-   stage.classList.remove('video-stage-pending');
-   preview?.remove();
+   video.pause();
+   video.currentTime=0;
+   video.muted=false;
+   video.defaultMuted=false;
+   video.volume=1;
+   video.loop=false;
    video.controls=true;
-   video.preload='auto';
-   video.load();
-   initialized=true;
-  }
-  video.muted=false;
-  video.volume=1;
-  const playPromise=video.play();
-  button.disabled=true;
-  if(caption)caption.textContent='Use os controles do vídeo para pausar ou ajustar o som.';
-  if(playPromise&&typeof playPromise.then==='function'){
-   playPromise.then(()=>{button.hidden=true;video.focus({preventScroll:true})}).catch(()=>{
-    button.disabled=false;
-    button.hidden=true;
-    if(caption)caption.textContent='Toque em reproduzir nos controles do vídeo para assistir.';
-   });
-  }else button.hidden=true;
+   const started=video.play();
+   if(started&&typeof started.then==='function'){
+     started.then(()=>{button.hidden=true;if(caption)caption.textContent='Use os controles do vídeo para pausar ou ajustar o som.'}).catch(()=>{
+       video.muted=true;video.defaultMuted=true;video.loop=true;
+       button.hidden=true;
+       if(caption)caption.textContent='Toque nos controles do vídeo para iniciar com som.';
+     });
+   }else button.hidden=true;
  });
 })();
 
