@@ -21,7 +21,43 @@ function closeUpgrade(){dialog.close();previousFocus?.focus()}
 document.querySelectorAll('[data-checkout]').forEach(button=>{button.disabled=!config.salesOpen;button.addEventListener('click',()=>{trackOfferEvent('plan_selected',{plan:button.dataset.checkout,price:button.dataset.checkout==='basic'?10:27,currency:'BRL'});if(button.dataset.checkout==='basic'){previousFocus=button;dialog.showModal();trackOfferEvent('upgrade_offer_view',{price:17,currency:'BRL'});dialog.querySelector('.modal-close').focus()}else checkout('complete')})});
 dialog.querySelector('.modal-close').addEventListener('click',closeUpgrade);dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeUpgrade()}});dialog.addEventListener('close',()=>previousFocus?.focus());document.getElementById('accept-upgrade').addEventListener('click',()=>{trackOfferEvent('upgrade_accepted',{price:17,currency:'BRL'});checkout('upgrade')});document.getElementById('continue-basic').addEventListener('click',()=>{trackOfferEvent('upgrade_declined',{price:10,currency:'BRL'});checkout('basic')});
 
-(()=>{const video=document.getElementById('offer-video'),button=document.getElementById('enable-video-sound'),caption=document.getElementById('video-caption');if(!video||!button)return;video.muted=true;video.defaultMuted=true;const attempt=video.play();if(attempt)attempt.catch(()=>{caption.textContent='Toque na tarja para assistir com som.'});button.addEventListener('click',()=>{video.pause();video.currentTime=0;video.muted=false;video.defaultMuted=false;video.volume=1;video.loop=false;video.controls=true;const playing=video.play();if(playing)playing.then(()=>{button.hidden=true;caption.textContent='Use os controles do vídeo para pausar ou ajustar o som.';video.focus()}).catch(()=>{video.muted=true;video.defaultMuted=true;video.loop=true;video.controls=true;caption.textContent='Toque novamente na tarja para assistir com som.'})})})();
+/* O vídeo de 25MB só é solicitado após interação explícita. */
+(()=>{
+ const video=document.getElementById('offer-video');
+ const button=document.getElementById('enable-video-sound');
+ const caption=document.getElementById('video-caption');
+ const stage=document.getElementById('offer-video-stage');
+ const preview=document.getElementById('offer-video-preview');
+ if(!video||!button||!stage)return;
+ let initialized=false;
+ button.addEventListener('click',()=>{
+  if(!initialized){
+   const source=video.querySelector('source[data-src]');
+   if(!source)return;
+   source.src=source.dataset.src;
+   source.removeAttribute('data-src');
+   video.hidden=false;
+   stage.classList.remove('video-stage-pending');
+   preview?.remove();
+   video.controls=true;
+   video.preload='auto';
+   video.load();
+   initialized=true;
+  }
+  video.muted=false;
+  video.volume=1;
+  const playPromise=video.play();
+  button.disabled=true;
+  if(caption)caption.textContent='Use os controles do vídeo para pausar ou ajustar o som.';
+  if(playPromise&&typeof playPromise.then==='function'){
+   playPromise.then(()=>{button.hidden=true;video.focus({preventScroll:true})}).catch(()=>{
+    button.disabled=false;
+    button.hidden=true;
+    if(caption)caption.textContent='Toque em reproduzir nos controles do vídeo para assistir.';
+   });
+  }else button.hidden=true;
+ });
+})();
 
 /* Carrossel: só o mapa ativo participa do layout, evitando altura herdada de imagens verticais. */
 (()=>{
